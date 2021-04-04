@@ -5,11 +5,6 @@ from PIL import Image
 
 uploaded_file = st.file_uploader("Upload Files",type=['jpeg','jpg','png'])
 
-if uploaded_file is not None:
-    # Convert the file to opencv image
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-    opencv_image = cv2.imdecode(file_bytes,1)
-
 def dodge(x, y):
     return cv2.divide(x,  255 - y, scale=256)
 
@@ -20,15 +15,20 @@ def sketch(img):
     final_img = dodge(img_gray, img_smoothing)
     return final_img
 
-st.title('Sketches with Python')
+if uploaded_file is not None:
+    # Convert the file to opencv image
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    opencv_image = cv2.imdecode(file_bytes,1)
 
-col1, col2= st.beta_columns(2)
+    st.title('Sketches with Python')
 
-col1.header("Original")
-col1.image(opencv_image, use_column_width=True, channels="BGR")
+    col1, col2= st.beta_columns(2)
 
-col2.header("Sketch")
-col2.image(sketch(opencv_image), use_column_width=True)
+    col1.header("Original")
+    col1.image(opencv_image, use_column_width=True, channels="BGR")
+
+    col2.header("Sketch")
+    col2.image(sketch(opencv_image), use_column_width=True)
 
 # image = Image.open(uploaded_file)
 # st.image(image, caption='Uploaded Image.', use_column_width=True)
