@@ -1,7 +1,9 @@
+import streamlit as st
 from tensorflow import keras
 from PIL import Image, ImageOps
 import numpy as np
 
+@st.cache
 def teachable_machine_classification(img, weights_file):
     # Load the model
     model = keras.models.load_model(weights_file)
